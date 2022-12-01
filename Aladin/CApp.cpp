@@ -1,4 +1,6 @@
 #include "CApp.h"
+#include "CBitmap.h"
+#include "CDC.h"
 
 CApp* CApp::m_inst = nullptr;
 
@@ -10,6 +12,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
 void CApp::Init(HINSTANCE hInstance, int nCmdShow)
 {
+
     WNDCLASSEX wcex;
 
     wcex.cbSize = sizeof(WNDCLASSEX);
@@ -27,7 +30,7 @@ void CApp::Init(HINSTANCE hInstance, int nCmdShow)
 
     RegisterClassEx(&wcex);
 
-    m_hwnd = CreateWindow(
+    m_hWnd = CreateWindow(
         L"szWindowClass", L"szTitle",
         WS_OVERLAPPED | WS_SYSMENU,
         CW_USEDEFAULT, CW_USEDEFAULT,
@@ -36,26 +39,62 @@ void CApp::Init(HINSTANCE hInstance, int nCmdShow)
         NULL,
         hInstance, NULL);
 
-    RECT rc;
-    GetClientRect(m_hwnd, &rc);
+    m_player = new Player(m_hWnd);
 
-    ShowWindow(m_hwnd, nCmdShow);   // WM_PAINT 호출
-    UpdateWindow(m_hwnd);
+    RECT rc;
+    GetClientRect(m_hWnd, &rc);
+
+    ShowWindow(m_hWnd, nCmdShow);   // WM_PAINT 호출
+    UpdateWindow(m_hWnd);
+
+
+}
+
+void CApp::Input()
+{
+    m_player->Input();
 }
 
 void CApp::Update()
 {
+
 }
 
 void CApp::Render()
 {
     if (m_hdc == NULL) return;
 
+    HDC hMemDC = CreateCompatibleDC(m_hdc);
+    RECT rt;
+    rt.right = WIDTH;
+    rt.bottom = HEIGHT;
+
+    //FillRect(hMemDC, &rt, (HBRUSH)GetStockObject(WHITE_BRUSH));
+
+    //m_cdc.RenderScreen(hMemDC, 0, 0, WIDTH, HEIGHT);
+
+    //m_player->Render(hMemDC);
+
+    Rectangle(hMemDC, 10, 10, 100, 100);
+
+    HBITMAP backBit = CreateCompatibleBitmap(hMemDC, rt.right, rt.bottom);
+    HBITMAP oldBackBit = (HBITMAP)SelectObject(hMemDC, backBit);
+
+
+
+
+    BitBlt(m_hdc, 0, 0, WIDTH, HEIGHT, hMemDC, 0, 0, SRCCOPY);
+
+    ReleaseDC(m_hWnd, hMemDC);
 }
 
 int CApp::Run()
 {
     MSG msg;
+    CBitmap bitmap(m_hWnd, L"background.bmp");
+    m_cdc.SetBitmap(&bitmap);
+    InvalidateRgn(m_hWnd, NULL, false);
+    //m_cdc.RenderScreen(m_hdc, 0, 0, WIDTH, HEIGHT);
 
     while (true)
     {
@@ -67,9 +106,10 @@ int CApp::Run()
             DispatchMessage(&msg);
         }
 
+        Input();
         // game loop
         Update();
-        Render();
+        InvalidateRgn(m_hWnd, NULL, false);
     }
 
     return (int)msg.wParam;
@@ -78,6 +118,7 @@ int CApp::Run()
 LRESULT CApp::Proc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
     PAINTSTRUCT ps;
+    m_hWnd = hWnd;
 
     switch (message)
     {
@@ -87,6 +128,9 @@ LRESULT CApp::Proc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     case WM_PAINT:
     {
         m_hdc = BeginPaint(hWnd, &ps);
+
+        Render();
+
         EndPaint(hWnd, &ps);
     }
     break;

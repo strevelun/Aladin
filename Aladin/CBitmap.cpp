@@ -12,7 +12,7 @@ CBitmap::CBitmap(HWND hWnd, LPCWSTR fileName)
         return;
     }
 
-    m_sprites = new CSprite[16];
+   // m_sprites = new CSprite[16];
 
     HDC hdc = GetDC(hWnd);
     BITMAPFILEHEADER    bmFileHeader;
@@ -33,14 +33,14 @@ CBitmap::CBitmap(HWND hWnd, LPCWSTR fileName)
     m_hMemDC = CreateCompatibleDC(hdc);
     SelectObject(m_hMemDC, m_bitmap);
 
-    int x = 10, y = 12;
+    // int x = 10, y = 12;
 
     // 10, 12, width/height:63
     // 10, 90, 170, 250 => АЃАн 80 (width)
     // 12, 92, 172, 252
-    for (int i = 0; i < 4; i++)
-        for (int j = 0; j < 4; j++)
-            m_sprites[(i * 4) + j] = CSprite(x + (j * 80), y + (i * 80), 64, 64);
+    //for (int i = 0; i < 4; i++)
+      //  for (int j = 0; j < 4; j++)
+        //    m_sprites[(i * 4) + j] = CSprite(x + (j * 80), y + (i * 80), 64, 64);
 
     ReleaseDC(hWnd, hdc);
     CloseHandle(m_hFile);
@@ -53,10 +53,12 @@ void CBitmap::RenderBit(HDC hdc)
 
 void CBitmap::RenderStretch(HDC hdc, long dx, long dy, int screenSizeX, int screenSizeY, float multiple)
 {
-    StretchBlt(hdc, 0, 0, screenSizeX, screenSizeY, m_hMemDC, dx, dy, screenSizeX / 5+3, m_height-6, SRCCOPY);
+    StretchBlt(hdc, 0, 0, screenSizeX, screenSizeY, m_hMemDC, dx, dy, screenSizeX * multiple, screenSizeY * multiple, SRCCOPY);
 }
 
-void CBitmap::RenderSprite(HDC hdc, int x, int y, int idx)
+void CBitmap::RenderSprite(HDC hdc, int x, int y, const char* name, int idx)
 {
-    BitBlt(hdc, x, y, m_sprites[idx].GetHeight(), m_sprites[idx].GetWidth(), m_hMemDC, m_sprites[idx].GetX(), m_sprites[idx].GetY(), SRCCOPY);
+
+    BitBlt(hdc, x, y, m_mapSprites[name][idx].GetWidth(), m_mapSprites[name][idx].GetHeight(), 
+        m_hMemDC, m_mapSprites[name][idx].GetX(), m_mapSprites[name][idx].GetY(), SRCCOPY);
 }

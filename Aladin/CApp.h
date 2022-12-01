@@ -2,8 +2,10 @@
 #include <windows.h>
 
 #define MAX_LOADSTRING 100
-#define WIDTH           1680
+#define WIDTH           1680 // 4773 2.84
 #define HEIGHT          1080
+#include "CDC.h"
+#include "Player.h"
 
 class CApp
 {
@@ -13,10 +15,15 @@ private:
 	WCHAR szTitle[MAX_LOADSTRING];
 	WCHAR szWindowClass[MAX_LOADSTRING];
 
-	HWND	m_hwnd;
+	HWND	m_hWnd;
 	HDC		m_hdc;
 
+	CDC m_cdc;
+
 	HINSTANCE m_hInstance;
+
+	Player* m_player;
+	int backgroundX = 0, backgroundY = 0;
 
 private:
 	CApp() { m_hdc = NULL; }
@@ -30,6 +37,7 @@ public:
 	}
 
 	void Init(HINSTANCE hInstance, int nCmdShow);
+	void Input();
 	void Update();
 	void Render();
 	int Run();

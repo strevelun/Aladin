@@ -19,10 +19,17 @@ void CDC::Render(HDC hdc, long dx, long dy, float multiple)
 
 void CDC::RenderScreen(HDC hdc, int x, int y, int screenSizeX, int screenSizeY)
 {
-	m_bitmap->RenderStretch(hdc, x, y, screenSizeX, screenSizeY, 1.06);
-}
+	if (m_bitmap == nullptr)
+		return;
 
+	m_bitmap->RenderStretch(hdc, x, y+250, screenSizeX, screenSizeY, 1 / (m_bitmap->GetWidth() / (float)screenSizeX));
+}
+/*
 void CDC::RenderSprite(HDC hdc, int x, int y, int idx)
 {
+	if (m_bitmap == nullptr)
+		return;
+
 	m_bitmap->RenderSprite(hdc, x, y, idx);
 }
+*/
