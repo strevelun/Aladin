@@ -47,16 +47,25 @@ void CApp::Init(HINSTANCE hInstance, int nCmdShow)
     ShowWindow(m_hWnd, nCmdShow);   // WM_PAINT È£Ãâ
     UpdateWindow(m_hWnd);
 
-
+    QueryPerformanceFrequency(&m_second);
+    QueryPerformanceCounter(&m_time);
 }
 
 void CApp::Input()
 {
-    m_player->Input();
+    m_player->Input(m_deltaTime);
 }
 
 void CApp::Update()
 {
+    LARGE_INTEGER	time;
+    QueryPerformanceCounter(&time);
+
+    m_deltaTime = (time.QuadPart - m_time.QuadPart) / (float)m_second.QuadPart;
+    m_time = time;
+
+    m_player->Update(m_deltaTime);
+
 
 }
 
@@ -64,28 +73,23 @@ void CApp::Render()
 {
     if (m_hdc == NULL) return;
 
-    HDC hMemDC = CreateCompatibleDC(m_hdc);
+    HDC hBackBufferDC = CreateCompatibleDC(m_hdc);
     RECT rt;
-    rt.right = WIDTH;
-    rt.bottom = HEIGHT;
+    GetClientRect(m_hWnd, &rt);
 
-    //FillRect(hMemDC, &rt, (HBRUSH)GetStockObject(WHITE_BRUSH));
+    HBITMAP hBackBufferBMP = CreateCompatibleBitmap(m_hdc, rt.right, rt.bottom);
+    SelectObject(hBackBufferDC, hBackBufferBMP);
 
-    //m_cdc.RenderScreen(hMemDC, 0, 0, WIDTH, HEIGHT);
+    FillRect(hBackBufferDC, &rt, (HBRUSH)GetStockObject(WHITE_BRUSH));
 
-    //m_player->Render(hMemDC);
+    m_cdc.RenderScreen(hBackBufferDC, backgroundX, backgroundY, WIDTH, HEIGHT);
+    m_player->Render(hBackBufferDC, m_deltaTime);
 
-    Rectangle(hMemDC, 10, 10, 100, 100);
-
-    HBITMAP backBit = CreateCompatibleBitmap(hMemDC, rt.right, rt.bottom);
-    HBITMAP oldBackBit = (HBITMAP)SelectObject(hMemDC, backBit);
+    BitBlt(m_hdc, 0, 0, WIDTH, HEIGHT, hBackBufferDC, 0, 0, SRCCOPY);
 
 
-
-
-    BitBlt(m_hdc, 0, 0, WIDTH, HEIGHT, hMemDC, 0, 0, SRCCOPY);
-
-    ReleaseDC(m_hWnd, hMemDC);
+    DeleteDC(hBackBufferDC);
+    DeleteObject(hBackBufferBMP);
 }
 
 int CApp::Run()
@@ -132,6 +136,7 @@ LRESULT CApp::Proc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         Render();
 
         EndPaint(hWnd, &ps);
+
     }
     break;
     case WM_DESTROY:

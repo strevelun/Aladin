@@ -23,7 +23,11 @@ private:
 	HINSTANCE m_hInstance;
 
 	Player* m_player;
-	int backgroundX = 0, backgroundY = 0;
+	int backgroundX = 100, backgroundY = 100;
+
+	LARGE_INTEGER		m_second;
+	LARGE_INTEGER		m_time;
+	float m_deltaTime = 0.0f;
 
 private:
 	CApp() { m_hdc = NULL; }

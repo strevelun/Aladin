@@ -36,23 +36,21 @@ Player::Player(HWND hWnd)
 	m_bitmap = new CBitmap(hWnd, L"character.bmp");
 	m_bitmap->AddSprite(m_idleSprites, "Idle");
 	m_bitmap->AddSprite(m_runningSprites, "Running");
-
-	m_tick = GetTickCount64();
 }
 
-void Player::Input()
+void Player::Input(float deltaTime)
 {
 	STATE temp;
 
 	if (GetAsyncKeyState('A') & 0x8000)
 	{
-		m_xpos -= 1;
 		temp = RUNNING;
+		m_dir = DIR::LEFT;
 	}
 	else if (GetAsyncKeyState('D') & 0x8000)
 	{
-		m_xpos += 1;
 		temp = RUNNING;
+		m_dir = DIR::RIGHT;
 	}
 	else
 	{
@@ -66,18 +64,25 @@ void Player::Input()
 	}
 }
 
-void Player::Render(HDC hdc)
+void Player::Update(float deltaTime)
 {
-	//m_tick = GetTickCount64();
-	if (m_state == IDLE)
-		m_bitmap->RenderSprite(hdc, m_xpos, m_ypos, "Idle", m_curStateIdx);
-	else if (m_state == RUNNING)
-		m_bitmap->RenderSprite(hdc, m_xpos, m_ypos, "Running", m_curStateIdx);
-		
-
-	if (GetTickCount64() - m_tick >= 100)
+	if (m_state == RUNNING)
 	{
-		m_tick = GetTickCount64();
+		if (m_dir == DIR::LEFT)
+		{
+			m_xpos -= 300 * deltaTime;
+		}
+		else if (m_dir == DIR::RIGHT)
+		{
+			m_xpos += 300 * deltaTime;
+		}
+	}
+
+	m_tick += deltaTime;
+
+	if (m_tick >= 0.1)
+	{
+		m_tick = 0;
 
 		if (m_state == IDLE)
 		{
@@ -88,4 +93,14 @@ void Player::Render(HDC hdc)
 			m_curStateIdx = ++m_curStateIdx % 11;
 		}
 	}
+
+}
+
+void Player::Render(HDC hdc, float deltaTime)
+{
+	if (m_state == IDLE)
+		m_bitmap->RenderSprite(hdc, m_xpos, m_ypos, "Idle", m_curStateIdx);
+	else if (m_state == RUNNING)
+		m_bitmap->RenderSprite(hdc, m_xpos, m_ypos, "Running", m_curStateIdx);
+
 }

@@ -53,12 +53,13 @@ void CBitmap::RenderBit(HDC hdc)
 
 void CBitmap::RenderStretch(HDC hdc, long dx, long dy, int screenSizeX, int screenSizeY, float multiple)
 {
-    StretchBlt(hdc, 0, 0, screenSizeX, screenSizeY, m_hMemDC, dx, dy, screenSizeX * multiple, screenSizeY * multiple, SRCCOPY);
+    StretchBlt(hdc, 0, 0, screenSizeX, screenSizeY, m_hMemDC, dx, dy, screenSizeX * multiple, screenSizeY, SRCCOPY);
 }
 
 void CBitmap::RenderSprite(HDC hdc, int x, int y, const char* name, int idx)
 {
 
-    BitBlt(hdc, x, y, m_mapSprites[name][idx].GetWidth(), m_mapSprites[name][idx].GetHeight(), 
-        m_hMemDC, m_mapSprites[name][idx].GetX(), m_mapSprites[name][idx].GetY(), SRCCOPY);
+    GdiTransparentBlt(hdc, x, y, m_mapSprites[name][idx].GetWidth() * 3, m_mapSprites[name][idx].GetHeight() * 3,
+        m_hMemDC, m_mapSprites[name][idx].GetX(), m_mapSprites[name][idx].GetY(), 
+        m_mapSprites[name][idx].GetWidth(), m_mapSprites[name][idx].GetHeight(),RGB(255,0,255));
 }

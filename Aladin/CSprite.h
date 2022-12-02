@@ -11,7 +11,7 @@ private:
 public:
 	CSprite() {}
 	CSprite(int _x, int _y, int _w, int _h) :
-		x(_x), y(_y), w(_w), h(_h), px(0), py(0)
+		x(_x), y(_y), w(_w), h(_h), px(0), py(1)
 	{}
 
 	int GetX() const { return x; }

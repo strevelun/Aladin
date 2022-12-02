@@ -8,6 +8,12 @@ enum STATE
 	RUNNING
 };
 
+enum DIR
+{
+	LEFT,
+	RIGHT
+};
+
 class Player
 {
 	float m_xpos=200, m_ypos=500;
@@ -15,10 +21,10 @@ class Player
 	CSprite* m_runningSprites;
 	CBitmap* m_bitmap;
 
-	STATE m_state;
+	STATE	m_state;
+	DIR		m_dir;
 	int m_curStateIdx = 0;
-
-	int m_tick = 0;
+	float m_tick = 0;
 
 public:
 	Player();
@@ -28,7 +34,8 @@ public:
 	int GetYPos() const { return m_ypos; }
 	STATE GetState() const { return m_state; }
 
-	void Input();
-	void Render(HDC hdc);
+	void Input(float deltaTime);
+	void Update(float deltaTime);
+	void Render(HDC hdc, float deltaTime);
 };
 
