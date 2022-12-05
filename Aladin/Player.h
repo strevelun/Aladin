@@ -38,10 +38,11 @@ class Player
 	int m_curStateIdx = 0;
 	float m_tick = 0;
 
-	int m_jumpYpos = -1;
-	int m_jump =500;
-	int m_jumpStartYPos = 0;
-	float m_jumpSpeed = -1.0f; // 0이 되면 
+	int m_jump =1000; // 점프 높이
+	int m_jumpStartYPos = 0; // 스페이스바 누를때 Ypos
+	float m_jumpRate = -1.0f; 
+
+	int m_moveSpeed = 600;
 
 public:
 	Player();

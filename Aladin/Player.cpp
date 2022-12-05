@@ -102,22 +102,24 @@ void Player::Input(float deltaTime)
 	}
 	
 
-
+	// 현재 JUMP상태이면(1프레임 전에 JUMP키를 누른 상태이면) INAIR로 바로 교체함.
 	if ((m_state & JUMP) != 0)
 	{
 		temp |= INAIR;
 	}
+	// 스페이스바 누를 시점에서 INAIR와 FALL인 상태가 아니어야 점프 가능
 	else if ((GetAsyncKeyState(VK_SPACE) & 0x8000) && ((m_state & INAIR) == 0) && ((m_state & FALL) == 0))
 	{
-		//MessageBox(NULL, L"FDSA", L"FDSA", MB_OK);
 		temp |= JUMP;
 	}
+	// 현재 INAIR상태이면 계속 INAIR 상태로 
 	else if ((m_state & INAIR) != 0)
 	{
 		temp |= INAIR;
 	}
 
-	if (m_jumpSpeed > 0.0f) // 점프할 때 정했던 최고 높이에 도달하면
+	// 현재 점프 최고점에 도달한 이후라면 INAIR가 아닌 FALL 상태로 전환
+	if (m_jumpRate > 0.0f)
 	{
 		temp &= ~INAIR;
 		temp |= FALL;
@@ -134,21 +136,18 @@ void Player::Update(float deltaTime)
 {
 	if ((m_state & INAIR) != 0 || (m_state & FALL) != 0)
 	{
-		m_ypos += m_jump * deltaTime * m_jumpSpeed;
+		m_ypos += m_jump * deltaTime * m_jumpRate;
 
-		m_jumpSpeed += 2.0f * deltaTime;
+		m_jumpRate += 2.0f * deltaTime;
 
 		if (m_ypos >= m_jumpStartYPos)
 		{
 			m_ypos = m_jumpStartYPos;
 			m_state &= ~JUMP; // 점프 상태만 뺸다.
-			m_jumpSpeed = -1.0f;
+			m_jumpRate = -1.0f;
 		}
 	}
 
-	// 달리고 있으나 동시에 in air 상태인 경우
-
-	// 점프 키를 누르면 현재 y좌표에서 + jump 거리 설정한 것만큼 m_jumpYpos에 넣고
 	if ((m_state & JUMP) != 0)
 	{
 		//m_jumpYpos = m_ypos - m_jump;
@@ -160,17 +159,17 @@ void Player::Update(float deltaTime)
 	{
 		if (m_dir == DIR::LEFT)
 		{
-			m_xpos -= 300 * deltaTime;
+			m_xpos -= m_moveSpeed * deltaTime;
 		}
 		else if (m_dir == DIR::RIGHT)
 		{
-			m_xpos += 300 * deltaTime;
+			m_xpos += m_moveSpeed * deltaTime;
 		}
 	}
 
 	m_tick += deltaTime;
 
-	if (m_tick >= 0.1)
+	if (m_tick >= 0.1) // 값이 클수록 애니메이션이 느려짐
 	{
 		m_tick = 0;
 
@@ -194,7 +193,6 @@ void Player::Update(float deltaTime)
 				m_curStateIdx = ++m_curStateIdx % 5;
 		}
 	}
-
 }
 
 void Player::Render(HDC hdc, float deltaTime)
