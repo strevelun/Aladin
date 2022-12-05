@@ -1,6 +1,7 @@
 #include "CApp.h"
 #include "CBitmap.h"
 #include "CDC.h"
+#include <string>
 
 CApp* CApp::m_inst = nullptr;
 
@@ -40,6 +41,7 @@ void CApp::Init(HINSTANCE hInstance, int nCmdShow)
         hInstance, NULL);
 
     m_player = new Player(m_hWnd);
+    m_background = new Background(m_hWnd);
 
     RECT rc;
     GetClientRect(m_hWnd, &rc);
@@ -66,7 +68,7 @@ void CApp::Update()
 
     m_player->Update(m_deltaTime);
 
-
+    // if(m_player->GetXPos() )
 }
 
 void CApp::Render()
@@ -81,8 +83,9 @@ void CApp::Render()
     SelectObject(hBackBufferDC, hBackBufferBMP);
 
     FillRect(hBackBufferDC, &rt, (HBRUSH)GetStockObject(WHITE_BRUSH));
+    
+    m_background->Render(hBackBufferDC, 0,0, WIDTH, HEIGHT, backgroundX, backgroundY);
 
-    m_cdc.RenderScreen(hBackBufferDC, backgroundX, backgroundY, WIDTH, HEIGHT);
     m_player->Render(hBackBufferDC, m_deltaTime);
 
     BitBlt(m_hdc, 0, 0, WIDTH, HEIGHT, hBackBufferDC, 0, 0, SRCCOPY);
@@ -90,6 +93,13 @@ void CApp::Render()
 
     DeleteDC(hBackBufferDC);
     DeleteObject(hBackBufferBMP);
+
+    // ÁÂÇ¥ Ãâ·Â
+    std::wstring tmpX = std::to_wstring(m_player->GetXPos());
+    std::wstring tmpY = std::to_wstring(m_player->GetYPos());
+    std::wstring xyPosText = tmpX + L", " + tmpY;   // x, y
+
+    TextOut(m_hdc, 10, 10, xyPosText.c_str(), xyPosText.size());
 }
 
 int CApp::Run()

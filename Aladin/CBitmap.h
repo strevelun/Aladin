@@ -29,6 +29,6 @@ public:
 	void AddSprite(CSprite* sprite, const char* name) { m_mapSprites.insert(std::make_pair(name, sprite)); }
 
 	void RenderBit(HDC hdc);
-	void RenderStretch(HDC hdc, long dx, long dy, int screenSizeX, int screenSizeY, float multiple);
+	void RenderStretch(HDC hdc, long sx, long xy, int screenSizeX, int screenSizeY, int dx, int dy, float multiple);
 	void RenderSprite(HDC hdc, int x, int y, const char* name, int idx);
 };

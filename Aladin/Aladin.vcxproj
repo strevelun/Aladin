@@ -128,6 +128,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Aladin.cpp" />
+    <ClCompile Include="Background.cpp" />
     <ClCompile Include="CApp.cpp" />
     <ClCompile Include="CBitmap.cpp" />
     <ClCompile Include="CDC.cpp" />
@@ -135,6 +136,7 @@
     <ClCompile Include="Player.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Background.h" />
     <ClInclude Include="CApp.h" />
     <ClInclude Include="CBitmap.h" />
     <ClInclude Include="CDC.h" />

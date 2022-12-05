@@ -6,6 +6,7 @@
 #define HEIGHT          1080
 #include "CDC.h"
 #include "Player.h"
+#include "Background.h"
 
 class CApp
 {
@@ -17,13 +18,13 @@ private:
 
 	HWND	m_hWnd;
 	HDC		m_hdc;
-
 	CDC m_cdc;
-
 	HINSTANCE m_hInstance;
 
+
 	Player* m_player;
-	int backgroundX = 100, backgroundY = 100;
+	int backgroundX = 0, backgroundY = 100;
+	Background* m_background;
 
 	LARGE_INTEGER		m_second;
 	LARGE_INTEGER		m_time;
