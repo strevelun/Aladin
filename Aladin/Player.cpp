@@ -132,7 +132,7 @@ void Player::Input(float deltaTime)
 	}
 }
 
-void Player::Update(float deltaTime)
+void Player::Update(float deltaTime, bool backgroundLocked)
 {
 	if ((m_state & INAIR) != 0 || (m_state & FALL) != 0)
 	{
@@ -155,15 +155,25 @@ void Player::Update(float deltaTime)
 		m_jumpStartYPos = m_ypos;
 	}
 
-	if ((m_state & RUNNING) != 0)
+	if ((m_state & RUNNING) != 0 )
 	{
 		if (m_dir == DIR::LEFT)
 		{
 			m_xpos -= m_moveSpeed * deltaTime;
+
+			if (!backgroundLocked)
+			{
+				m_screenXPos -= m_moveSpeed * deltaTime;
+			}
 		}
 		else if (m_dir == DIR::RIGHT)
 		{
 			m_xpos += m_moveSpeed * deltaTime;
+
+			if (!backgroundLocked)
+			{
+				m_screenXPos += m_moveSpeed * deltaTime;
+			}
 		}
 	}
 
@@ -200,20 +210,20 @@ void Player::Render(HDC hdc, float deltaTime)
 	if ((m_state & IDLE) != 0)
 	{
 		if(m_state == IDLE)
-			m_bitmap->RenderSprite(hdc, m_xpos, m_ypos, "Idle", m_curStateIdx);
+			m_bitmap->RenderSprite(hdc, m_screenXPos, m_ypos, "Idle", m_curStateIdx);
 		if ((m_state & INAIR) != 0 || (m_state & JUMP) != 0)
-			m_bitmap->RenderSprite(hdc, m_xpos, m_ypos, "Jump", m_curStateIdx);
+			m_bitmap->RenderSprite(hdc, m_screenXPos, m_ypos, "Jump", m_curStateIdx);
 		else if ((m_state & FALL) != 0)
-			m_bitmap->RenderSprite(hdc, m_xpos, m_ypos, "Fall", m_curStateIdx);
+			m_bitmap->RenderSprite(hdc, m_screenXPos, m_ypos, "Fall", m_curStateIdx);
 	}
 
 	if ((m_state & RUNNING) != 0)
 	{
 		if (m_state == RUNNING)
-			m_bitmap->RenderSprite(hdc, m_xpos, m_ypos, "Running", m_curStateIdx);
+			m_bitmap->RenderSprite(hdc, m_screenXPos, m_ypos, "Running", m_curStateIdx);
 		else if ((m_state & INAIR) != 0 || (m_state & JUMP) != 0)
-			m_bitmap->RenderSprite(hdc, m_xpos, m_ypos, "RunJump", m_curStateIdx);
+			m_bitmap->RenderSprite(hdc, m_screenXPos, m_ypos, "RunJump", m_curStateIdx);
 		else if ((m_state & FALL) != 0)
-			m_bitmap->RenderSprite(hdc, m_xpos, m_ypos, "RunFall", m_curStateIdx);
+			m_bitmap->RenderSprite(hdc, m_screenXPos, m_ypos, "RunFall", m_curStateIdx);
 	}
 }

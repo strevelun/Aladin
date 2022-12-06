@@ -25,6 +25,7 @@ enum DIR
 class Player
 {
 	int m_xpos=200, m_ypos=500;
+	int m_screenXPos = 200, m_screenYPos = 500;
 	CSprite* m_idleSprites;
 	CSprite* m_runningSprites;
 	CSprite* m_jumpSprites;
@@ -53,9 +54,11 @@ public:
 	int GetXPos() const { return m_xpos; }
 	int GetYPos() const { return m_ypos; }
 	//STATE GetState() const { return m_state; }
+	int GetMoveSpeed() const { return m_moveSpeed; }
+	CBitmap* GetBitmap() const { return m_bitmap; }
 
 	void Input(float deltaTime);
-	void Update(float deltaTime);
+	void Update(float deltaTime, bool backgroundLocked);
 	void Render(HDC hdc, float deltaTime);
 };
 

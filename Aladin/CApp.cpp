@@ -66,9 +66,21 @@ void CApp::Update()
     m_deltaTime = (time.QuadPart - m_time.QuadPart) / (float)m_second.QuadPart;
     m_time = time;
 
-    m_player->Update(m_deltaTime);
+    int playerXPos = m_player->GetXPos();
+    int backgroundWidth = m_background->GetBitmap()->GetWidth();
 
-    // if(m_player->GetXPos() )
+    if (playerXPos >= m_background->GetBitmap()->GetWidth())
+    {
+        m_player->Update(m_deltaTime, false);
+    }
+    else if (playerXPos >= WIDTH / 2) // 넘어가면 배경 이동
+    {
+        backgroundX = playerXPos - (WIDTH / 2);
+        m_player->Update(m_deltaTime, true);
+    }
+    else
+        m_player->Update(m_deltaTime, false);
+    
 }
 
 void CApp::Render()
