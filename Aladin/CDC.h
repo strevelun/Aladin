@@ -6,12 +6,12 @@ class CBitmap;
 
 class CDC
 {
-	CBitmap* m_bitmap;
+	HDC m_hdc;
 
 public:
 	CDC() {}
 	CDC(CBitmap* bitmap);
-	void SetBitmap(CBitmap* bitmap) { m_bitmap = bitmap; }
+
 
 	void Render(HDC hdc);
 	void Render(HDC hdc, long dx, long dy, float multiple);

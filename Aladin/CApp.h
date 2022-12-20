@@ -7,6 +7,8 @@
 #include "CDC.h"
 #include "Player.h"
 #include "Background.h"
+#include "Animation.h"
+#include "Camera.h"
 
 class CApp
 {
@@ -18,21 +20,27 @@ private:
 
 	HWND	m_hWnd;
 	HDC		m_hdc;
-	CDC m_cdc;
+	//CDC m_cdc;
 	HINSTANCE m_hInstance;
-
+	HDC m_backBuffer;
 
 	Player* m_player;
-	int backgroundX = 0, backgroundY = 100;
+	int backgroundX = 0, backgroundY = 200;
 	Background* m_background;
+	Camera* m_camera;
 
 	LARGE_INTEGER		m_second;
 	LARGE_INTEGER		m_time;
 	float m_deltaTime = 0.0f;
 
+
 private:
 	CApp() { m_hdc = NULL; }
-	~CApp() {}
+	~CApp() 
+	{
+		delete m_background;
+		delete m_camera;
+	}
 
 public:
 	static CApp* GetInstance()

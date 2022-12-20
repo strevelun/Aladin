@@ -24,6 +24,7 @@ public:
 
 	int GetWidth() const { return m_width; }
 	int GetHeight() const { return m_height; }
+	HDC GetMemDC() const { return m_hMemDC; }
 	void SetHwnd(HWND hWnd) { m_hWnd = hWnd; }
 	void SetImage(LPCWSTR fileName) { m_fileName = fileName; }
 	void AddSprite(CSprite* sprite, const char* name) { m_mapSprites.insert(std::make_pair(name, sprite)); }

@@ -51,6 +51,9 @@ void CApp::Init(HINSTANCE hInstance, int nCmdShow)
 
     QueryPerformanceFrequency(&m_second);
     QueryPerformanceCounter(&m_time);
+
+    m_camera = new Camera(WIDTH, HEIGHT, m_background);
+    m_player->SetCamera(m_camera);
 }
 
 void CApp::Input()
@@ -69,18 +72,9 @@ void CApp::Update()
     int playerXPos = m_player->GetXPos();
     int backgroundWidth = m_background->GetBitmap()->GetWidth();
 
-    if (playerXPos >= m_background->GetBitmap()->GetWidth())
-    {
-        m_player->Update(m_deltaTime, false);
-    }
-    else if (playerXPos >= WIDTH / 2) // 넘어가면 배경 이동
-    {
-        backgroundX = playerXPos - (WIDTH / 2);
-        m_player->Update(m_deltaTime, true);
-    }
-    else
-        m_player->Update(m_deltaTime, false);
-    
+
+    //m_camera->MoveCamera(m_player->GetMoveSpeed() * m_deltaTime);
+    m_player->Update(m_deltaTime);
 }
 
 void CApp::Render()
@@ -96,11 +90,16 @@ void CApp::Render()
 
     FillRect(hBackBufferDC, &rt, (HBRUSH)GetStockObject(WHITE_BRUSH));
     
-    m_background->Render(hBackBufferDC, 0,0, WIDTH, HEIGHT, backgroundX, backgroundY);
+    //m_background->Render(hBackBufferDC, 0,0, WIDTH, HEIGHT, backgroundX, backgroundY);
 
-    m_player->Render(hBackBufferDC, m_deltaTime);
+    if (m_camera)
+    {
+        m_camera->Render(hBackBufferDC);
+        m_player->Render(hBackBufferDC, m_deltaTime);
+    }
 
-    BitBlt(m_hdc, 0, 0, WIDTH, HEIGHT, hBackBufferDC, 0, 0, SRCCOPY);
+    StretchBlt(m_hdc, 0, 0, WIDTH , HEIGHT , hBackBufferDC, 0, 0, WIDTH/1.5, HEIGHT/1.5, SRCCOPY);
+
 
 
     DeleteDC(hBackBufferDC);
@@ -117,10 +116,7 @@ void CApp::Render()
 int CApp::Run()
 {
     MSG msg;
-    CBitmap bitmap(m_hWnd, L"background.bmp");
-    m_cdc.SetBitmap(&bitmap);
-    InvalidateRgn(m_hWnd, NULL, false);
-    //m_cdc.RenderScreen(m_hdc, 0, 0, WIDTH, HEIGHT);
+   // InvalidateRgn(m_hWnd, NULL, false);
 
     while (true)
     {

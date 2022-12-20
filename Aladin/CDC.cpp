@@ -4,12 +4,12 @@
 
 CDC::CDC(CBitmap* bitmap)
 {
-	m_bitmap = bitmap;
+	//m_bitmap = bitmap;
 }
 
 void CDC::Render(HDC hdc)
 {
-	m_bitmap->RenderBit(hdc);
+	//m_bitmap->RenderBit(hdc);
 }
 
 void CDC::Render(HDC hdc, long dx, long dy, float multiple)
@@ -19,10 +19,10 @@ void CDC::Render(HDC hdc, long dx, long dy, float multiple)
 
 void CDC::RenderScreen(HDC hdc, int x, int y, int screenSizeX, int screenSizeY, int dx, int dy)
 {
-	if (m_bitmap == nullptr)
-		return;
+	//if (m_bitmap == nullptr)
+	//	return;
 
-	m_bitmap->RenderStretch(hdc, x, y, screenSizeX, screenSizeY, dx, dy, 1);
+	//m_bitmap->RenderStretch(hdc, x, y, screenSizeX, screenSizeY, dx, dy, 1);
 }
 /*
 void CDC::RenderSprite(HDC hdc, int x, int y, int idx)

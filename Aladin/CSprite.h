@@ -2,6 +2,8 @@
 
 #include "CBitmap.h"
 
+class CDC;
+
 class CSprite
 {
 private:
@@ -18,5 +20,7 @@ public:
 	int GetY() const { return y; }
 	int GetWidth() const { return w; }
 	int GetHeight() const { return h; }
+
+	void Render(HDC _dest, int _sx, int _sy, HDC _memDC);
 };
 
