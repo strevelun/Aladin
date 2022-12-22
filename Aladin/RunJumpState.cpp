@@ -17,11 +17,13 @@ void RunJumpState::Update(Player* player, float deltaTime)
 		player->MoveXPos(deltaTime);
 		player->ChangeState(STATE::RunJump);
 	}
-	else
-	{
-		player->Jump(false, deltaTime);
-		return;
-	}
+
+
 
 	player->Jump(true, deltaTime);
+
+	if (GetAsyncKeyState('Q') & 0x8000)
+	{
+		player->ChangeState(STATE::JumpAttack);
+	}
 }

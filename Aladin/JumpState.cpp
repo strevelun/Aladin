@@ -7,23 +7,20 @@ void JumpState::Update(Player* player, float deltaTime)
 {
 	player->UpdateStateIdx(5);
 
-	// 방향키 누르면 RunJumpState로 전환
 	if (GetAsyncKeyState('A') & 0x8000)
 	{
 		player->SetDir(DIR::LEFT);
-		player->MoveXPos(deltaTime, 1);
-		//player->ChangeState(STATE::RunJump);
+		player->MoveXPos(deltaTime, 1000);
 	}
 	if (GetAsyncKeyState('D') & 0x8000)
 	{
 		player->SetDir(DIR::RIGHT);
-		player->MoveXPos(deltaTime, 1);
-		//player->ChangeState(STATE::RunJump);
+		player->MoveXPos(deltaTime, 1000);
 	}
-	//else 
+
+	if (GetAsyncKeyState('Q') & 0x8000)
 	{
-		//player->Jump(false, deltaTime);
-		//return;
+		player->ChangeState(STATE::JumpAttack);
 	}
 
 	player->Jump(false, deltaTime);

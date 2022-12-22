@@ -31,6 +31,11 @@ public :
 	void Update();
 	void Render(HDC _dest, int _sx, int _sy, HDC _memDC);
 	void SetIdx(int _idx) { m_curIdx = _idx; }
+
+	bool IsEnd() 
+	{
+		return m_curIdx >= m_capacity - 1;
+	}
 };
 
 

@@ -134,6 +134,7 @@ void Player::MoveXPos(float deltaTime, int _speed)
 {
 
 	int camDir = 1;
+	float temp = (_speed * deltaTime); // 0.013
 
 	switch (m_dir)
 	{
@@ -161,10 +162,13 @@ void Player::Jump(bool _isRunning, float _deltaTime)
 	}
 	else if (m_jumpRate > 0.0f) // 최고점 도달
 	{
-		if (_isRunning)
-			ChangeState(STATE::RunFall);
-		else
-			ChangeState(STATE::FALL);
+		if (m_state != STATE::JumpAttack)
+		{
+			if (_isRunning)
+				ChangeState(STATE::RunFall);
+			else
+				ChangeState(STATE::FALL);
+		}
 	}
 
 
@@ -172,7 +176,7 @@ void Player::Jump(bool _isRunning, float _deltaTime)
 	if (m_jumpRate < 1.0f)
 	{
 		m_ypos += m_jump * _deltaTime * m_jumpRate;
-		m_jumpRate += 0.1f;
+		m_jumpRate += 0.14f;
 	}
 	else // 착지
 	{
@@ -195,6 +199,9 @@ void Player::Update(float deltaTime)
 {
 	m_tick += deltaTime;
 
+	////if (GetAsyncKeyState('Q') & 0x8000)
+	//	ChangeState(STATE::ATTACK);
+
 	if (m_tick >= 0.09) // 값이 클수록 애니메이션이 느려짐
 	{
 		m_tick = 0;
@@ -202,12 +209,28 @@ void Player::Update(float deltaTime)
 		m_anim[m_state]->Update();
 	}
 
-	m_attack = false;
 
 	// ANYSTATE
 	// run, idle : attack
 	// jump, jumprun : jump attack
 
+	/*
+	if (GetAsyncKeyState('Q') & 0x8000)
+		m_attack = true;
+
+	if (m_attack)
+	{
+		if (m_state == STATE::IDLE || m_state == STATE::RUNNING)
+		{
+
+		}
+		else if (m_state == STATE::JUMP || m_state == STATE::RunJump)
+		{
+
+		}
+		ChangeState(STATE::ATTACK);
+	}
+	*/
 }
 
 void Player::Render(HDC hdc, float deltaTime)

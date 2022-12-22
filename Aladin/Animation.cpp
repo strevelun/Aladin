@@ -37,7 +37,6 @@ void CAnimation::Update()
 		if (m_curIdx >= m_capacity-1)
 		{
 			m_curIdx = m_capacity - 1;
-		
 			return;
 		}
 	}
