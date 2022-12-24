@@ -139,7 +139,7 @@ void Player::MoveXPos(float deltaTime, int _speed)
 	switch (m_dir)
 	{
 	case DIR::LEFT:
-		m_xpos -= (_speed * deltaTime); // 변수 체크해보기 + 종횡비 적용하기, 델타타임에 틱을 넣은건 아닌지 확인
+		m_xpos -= (_speed * deltaTime);
 		camDir = -1;
 		
 		break;
@@ -149,8 +149,6 @@ void Player::MoveXPos(float deltaTime, int _speed)
 		break;
 	}
 
-
-	//m_camera->MoveCamera(m_xpos, m_ypos, camDir * m_moveSpeed * deltaTime);
 	m_camera->MoveCamera(m_xpos, m_ypos, camDir * _speed * deltaTime);
 }
 
@@ -236,5 +234,5 @@ void Player::Update(float deltaTime)
 void Player::Render(HDC hdc, float deltaTime)
 {
 	// 현위치 - 카메라 위치
-	m_anim[m_state]->Render(hdc, m_xpos - m_camera->GetXPos(), m_ypos, m_bitmap->GetMemDC());
+	m_anim[m_state]->Render(hdc, (m_xpos - m_camera->GetXPos()) * 4.0f, m_ypos, m_bitmap->GetMemDC());
 }

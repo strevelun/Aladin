@@ -21,6 +21,6 @@ public:
 	int GetWidth() const { return w; }
 	int GetHeight() const { return h; }
 
-	void Render(HDC _dest, int _sx, int _sy, HDC _memDC);
+	void Render(HDC _dest, float _sx, float _sy, HDC _memDC);
 };
 

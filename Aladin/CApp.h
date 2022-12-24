@@ -2,8 +2,8 @@
 #include <windows.h>
 
 #define MAX_LOADSTRING 100
-#define WIDTH           1680 // 4773 2.84
-#define HEIGHT          1080
+#define WIDTH           1200 // 30:22
+#define HEIGHT          880
 #include "CDC.h"
 #include "Player.h"
 #include "Background.h"
@@ -25,7 +25,7 @@ private:
 	HDC m_backBuffer;
 
 	Player* m_player;
-	int backgroundX = 0, backgroundY = 200;
+	int backgroundX = 0, backgroundY = 250;
 	Background* m_background;
 	Camera* m_camera;
 

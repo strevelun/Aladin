@@ -43,7 +43,7 @@ void CAnimation::Update()
 
 }
 
-void CAnimation::Render( HDC _dest , int _sx, int _sy, HDC _memDC)
+void CAnimation::Render( HDC _dest , float _sx, float _sy, HDC _memDC)
 {
 	m_curSprite->Render(_dest, _sx, _sy, _memDC);
 }

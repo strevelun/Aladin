@@ -15,6 +15,6 @@ public:
 	CBitmap* GetBitmap() const { return m_bitmap; }
 
 	void Render(HDC hdc, int screenPosX, int screenPosY, int screenSizeX, int screenSizeY,
-		int backPosX, int backPosY);
+		float backPosX, float backPosY);
 };
 

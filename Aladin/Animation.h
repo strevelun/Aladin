@@ -29,7 +29,7 @@ public :
 	~CAnimation();
 	void Add(CSprite* sprite);
 	void Update();
-	void Render(HDC _dest, int _sx, int _sy, HDC _memDC);
+	void Render(HDC _dest, float _sx, float _sy, HDC _memDC);
 	void SetIdx(int _idx) { m_curIdx = _idx; }
 
 	bool IsEnd() 

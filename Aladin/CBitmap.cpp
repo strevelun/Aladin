@@ -51,9 +51,9 @@ void CBitmap::RenderBit(HDC hdc)
     BitBlt(hdc, 0, 0, m_width, m_height, m_hMemDC, 0, 0, SRCCOPY);
 }
 
-void CBitmap::RenderStretch(HDC hdc, long sx, long xy, int screenSizeX, int screenSizeY, int dx, int dy, float multiple)
+void CBitmap::RenderStretch(HDC hdc, long sx, long xy, int screenSizeX, int screenSizeY, float dx, float dy, float multiple)
 {
-    StretchBlt(hdc, sx, xy, screenSizeX, screenSizeY, m_hMemDC, dx, dy, m_height * multiple, m_height * multiple,SRCCOPY);
+    StretchBlt(hdc, sx, xy, screenSizeX, screenSizeY, m_hMemDC, dx, dy, 300, 220,SRCCOPY);
 }
 
 void CBitmap::RenderSprite(HDC hdc, int x, int y, const char* name, int idx)

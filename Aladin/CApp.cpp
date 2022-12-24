@@ -31,11 +31,15 @@ void CApp::Init(HINSTANCE hInstance, int nCmdShow)
 
     RegisterClassEx(&wcex);
 
+    RECT rt = { 0, 0, WIDTH, HEIGHT };
+
+    AdjustWindowRect(&rt, WS_OVERLAPPEDWINDOW, NULL);
+
     m_hWnd = CreateWindow(
         L"szWindowClass", L"szTitle",
         WS_OVERLAPPED | WS_SYSMENU,
         CW_USEDEFAULT, CW_USEDEFAULT,
-        WIDTH, HEIGHT,
+        rt.right, rt.bottom,
         NULL,
         NULL,
         hInstance, NULL);
@@ -98,7 +102,7 @@ void CApp::Render()
         m_player->Render(hBackBufferDC, m_deltaTime);
     }
 
-    StretchBlt(m_hdc, 0, 0, WIDTH , HEIGHT , hBackBufferDC, 0, 0, WIDTH/1.5, HEIGHT/1.5, SRCCOPY);
+    StretchBlt(m_hdc, 0, 0, WIDTH , HEIGHT , hBackBufferDC, 0, 0, WIDTH, HEIGHT, SRCCOPY);
 
 
 

@@ -12,8 +12,8 @@ Background::~Background()
 }
 
 void Background::Render(HDC hdc, int screenPosX, int screenPosY, int screenSizeX, int screenSizeY,
-	int backPosX, int backPosY)
+	float backPosX, float backPosY)
 {
-	m_bitmap->RenderStretch(hdc, screenPosX, screenPosY, screenSizeX, screenSizeY, 
-		backPosX, backPosY, 1/1.55f);
+	m_bitmap->RenderStretch(hdc, screenPosX, screenPosY, screenSizeX, screenSizeY,
+		backPosX, backPosY, 1);
 }

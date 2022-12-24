@@ -32,7 +32,10 @@ enum DIR
 
 class Player
 {
-	float m_xpos=200, m_ypos=550;
+	// 월드 상에서의 좌표
+	float m_xpos=100, m_ypos=650;
+	
+	float m_screenXPos = 100, m_screenYPos = 650;
 
 	CBitmap* m_bitmap;
 	//CSprite* m_curSprite;
@@ -45,11 +48,11 @@ class Player
 	int m_curStateIdx = 0;
 	float m_tick = 0;
 
-	int m_jump = 3000; // 점프 높이
+	int m_jump = 18000; // 점프 높이
 	int m_jumpStartYPos = 0; // 스페이스바 누를때 Ypos
 	float m_jumpRate = -1.0f; 
 
-	int m_moveSpeed = 1000;
+	int m_moveSpeed = 10000;
 	bool m_attack = false;
 
 	CAnimation* m_anim[10];
@@ -63,7 +66,7 @@ public:
 	int GetCurStateIdx() const { return m_curStateIdx; }
 	int GetXPos() const { return m_xpos; }
 	int GetYPos() const { return m_ypos; }
-	void MoveXPos(float deltaTime, int _speed = 1500);
+	void MoveXPos(float deltaTime, int _speed = 5000);
 	//STATE GetState() const { return m_state; }
 	int GetMoveSpeed() const { return m_moveSpeed; }
 	CBitmap* GetBitmap() const { return m_bitmap; }

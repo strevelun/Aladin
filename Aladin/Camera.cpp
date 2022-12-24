@@ -25,16 +25,16 @@ void Camera::MoveCamera(int _playerXPos, int _playerYPos, int _move)
 		m_xpos = 0;
 		return;
 	}
-	else if (m_xpos + _move >= m_backgroundWidth - m_width)
+	else if (m_xpos + _move >= m_backgroundWidth - m_width / 4)
 	{
-		m_xpos = m_backgroundWidth - m_width / 1.55f;
+		m_xpos = m_backgroundWidth - m_width / 4;
 		return;
 	}
 
-	if (m_xpos <= 0 && _playerXPos < m_width / 3)
+	if (m_xpos <= 0 && _playerXPos < m_width / 4 / 2)
 		return;
-	//else if (_playerXPos >= m_backgroundWidth - m_width / 6)
-	//	return;
+	else if (_playerXPos >= m_backgroundWidth - m_width / 2)
+		return;
 
 
 	m_xpos += _move;
@@ -42,5 +42,5 @@ void Camera::MoveCamera(int _playerXPos, int _playerYPos, int _move)
 
 void Camera::Render(HDC _hdc)
 {
-	m_background->Render(_hdc, 0, 0, m_width, m_height, m_xpos, m_ypos+200);
+	m_background->Render(_hdc, 0, 0, m_width, m_height, m_xpos, m_ypos+470);
 }
