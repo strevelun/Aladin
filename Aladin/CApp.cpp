@@ -50,14 +50,18 @@ void CApp::Init(HINSTANCE hInstance, int nCmdShow)
     RECT rc;
     GetClientRect(m_hWnd, &rc);
 
-    ShowWindow(m_hWnd, nCmdShow);   // WM_PAINT 호출
-    UpdateWindow(m_hWnd);
+    //ShowWindow(m_hWnd, nCmdShow);   // WM_PAINT 호출
+    //UpdateWindow(m_hWnd);
 
     QueryPerformanceFrequency(&m_second);
     QueryPerformanceCounter(&m_time);
 
     m_camera = new Camera(WIDTH, HEIGHT, m_background);
     m_player->SetCamera(m_camera);
+
+    ShowWindow(m_hWnd, nCmdShow);   // WM_PAINT 호출
+    UpdateWindow(m_hWnd);
+
 }
 
 void CApp::Input()
@@ -85,6 +89,7 @@ void CApp::Render()
 {
     if (m_hdc == NULL) return;
 
+    m_hdc = GetDC(m_hWnd);
     HDC hBackBufferDC = CreateCompatibleDC(m_hdc);
     RECT rt;
     GetClientRect(m_hWnd, &rt);
@@ -115,12 +120,14 @@ void CApp::Render()
     std::wstring xyPosText = tmpX + L", " + tmpY;   // x, y
 
     TextOut(m_hdc, 10, 10, xyPosText.c_str(), xyPosText.size());
+
+    ReleaseDC(m_hWnd, m_hdc);
 }
 
 int CApp::Run()
 {
     MSG msg;
-   // InvalidateRgn(m_hWnd, NULL, false);
+    //InvalidateRgn(m_hWnd, NULL, true);
 
     while (true)
     {
@@ -135,7 +142,9 @@ int CApp::Run()
         Input();
         // game loop
         Update();
-        InvalidateRgn(m_hWnd, NULL, false);
+        Render();
+
+        //InvalidateRgn(m_hWnd, NULL, false);
     }
 
     return (int)msg.wParam;
@@ -155,7 +164,7 @@ LRESULT CApp::Proc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     {
         m_hdc = BeginPaint(hWnd, &ps);
 
-        Render();
+        //Render();
 
         EndPaint(hWnd, &ps);
 
