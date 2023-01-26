@@ -2,6 +2,7 @@
 #include "CBitmap.h"
 #include "CDC.h"
 #include <string>
+#include "CFrameTime.h"
 
 CApp* CApp::m_inst = nullptr;
 
@@ -50,18 +51,13 @@ void CApp::Init(HINSTANCE hInstance, int nCmdShow)
     RECT rc;
     GetClientRect(m_hWnd, &rc);
 
-    //ShowWindow(m_hWnd, nCmdShow);   // WM_PAINT 호출
-    //UpdateWindow(m_hWnd);
-
-    QueryPerformanceFrequency(&m_second);
-    QueryPerformanceCounter(&m_time);
-
     m_camera = new Camera(WIDTH, HEIGHT, m_background);
     m_player->SetCamera(m_camera);
 
     ShowWindow(m_hWnd, nCmdShow);   // WM_PAINT 호출
     UpdateWindow(m_hWnd);
 
+    CFrameTime::GetInstance()->SetFrameLimit(60);
 }
 
 void CApp::Input()
@@ -72,16 +68,10 @@ void CApp::Input()
 void CApp::Update()
 {
     LARGE_INTEGER	time;
-    QueryPerformanceCounter(&time);
-
-    m_deltaTime = (time.QuadPart - m_time.QuadPart) / (float)m_second.QuadPart;
-    m_time = time;
 
     int playerXPos = m_player->GetXPos();
     int backgroundWidth = m_background->GetBitmap()->GetWidth();
 
-
-    //m_camera->MoveCamera(m_player->GetMoveSpeed() * m_deltaTime);
     m_player->Update(m_deltaTime);
 }
 
@@ -89,7 +79,7 @@ void CApp::Render()
 {
     if (m_hdc == NULL) return;
 
-    m_hdc = GetDC(m_hWnd);
+    m_hdc = GetDC(m_hWnd); // lock
     HDC hBackBufferDC = CreateCompatibleDC(m_hdc);
     RECT rt;
     GetClientRect(m_hWnd, &rt);
@@ -119,7 +109,10 @@ void CApp::Render()
     std::wstring tmpY = std::to_wstring(m_player->GetYPos());
     std::wstring xyPosText = tmpX + L", " + tmpY;   // x, y
 
+    std::wstring fps = std::to_wstring(CFrameTime::GetInstance()->GetFps());
+
     TextOut(m_hdc, 10, 10, xyPosText.c_str(), xyPosText.size());
+    TextOut(m_hdc, 10, 30, fps.c_str(), fps.size());
 
     ReleaseDC(m_hWnd, m_hdc);
 }
@@ -127,7 +120,6 @@ void CApp::Render()
 int CApp::Run()
 {
     MSG msg;
-    //InvalidateRgn(m_hWnd, NULL, true);
 
     while (true)
     {
@@ -139,12 +131,14 @@ int CApp::Run()
             DispatchMessage(&msg);
         }
 
-        Input();
-        // game loop
-        Update();
-        Render();
+        if (CFrameTime::GetInstance()->Update())
+        {
+            m_deltaTime = CFrameTime::GetInstance()->GetDeltaTime();
 
-        //InvalidateRgn(m_hWnd, NULL, false);
+            Input();
+            Update();
+            Render();
+        }
     }
 
     return (int)msg.wParam;

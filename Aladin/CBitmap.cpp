@@ -1,6 +1,9 @@
+
+#include <Windows.h>
+#include <vector>
+
 #include "CBitmap.h"
 #include "CSprite.h"
-#include <Windows.h>
 
 CBitmap::CBitmap(HWND hWnd, LPCWSTR fileName)
 {
@@ -58,7 +61,9 @@ void CBitmap::RenderStretch(HDC hdc, long sx, long xy, int screenSizeX, int scre
 
 void CBitmap::RenderSprite(HDC hdc, int x, int y, const char* name, int idx)
 {
+    /*
     GdiTransparentBlt(hdc, x - m_mapSprites[name][idx].GetWidth() * 0.5f, y - m_mapSprites[name][idx].GetHeight(), m_mapSprites[name][idx].GetWidth(), m_mapSprites[name][idx].GetHeight(),
         m_hMemDC, m_mapSprites[name][idx].GetX(), m_mapSprites[name][idx].GetY(), 
         m_mapSprites[name][idx].GetWidth(), m_mapSprites[name][idx].GetHeight(), RGB(255,0,255));
+        */
 }

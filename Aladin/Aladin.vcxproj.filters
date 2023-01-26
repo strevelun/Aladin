@@ -51,7 +51,7 @@
     <ClCompile Include="RunningState.cpp">
       <Filter>소스 파일\State</Filter>
     </ClCompile>
-    <ClCompile Include="Animation.cpp">
+    <ClCompile Include="CAnimation.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="Camera.cpp">
@@ -71,6 +71,12 @@
     </ClCompile>
     <ClCompile Include="AttackState.cpp">
       <Filter>소스 파일\State</Filter>
+    </ClCompile>
+    <ClCompile Include="CFrameTime.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Animator.cpp">
+      <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -104,7 +110,7 @@
     <ClInclude Include="RunningState.h">
       <Filter>소스 파일\State</Filter>
     </ClInclude>
-    <ClInclude Include="Animation.h">
+    <ClInclude Include="CAnimation.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="Camera.h">
@@ -124,6 +130,12 @@
     </ClInclude>
     <ClInclude Include="AttackState.h">
       <Filter>소스 파일\State</Filter>
+    </ClInclude>
+    <ClInclude Include="CFrameTime.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Animator.h">
+      <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

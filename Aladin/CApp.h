@@ -7,7 +7,7 @@
 #include "CDC.h"
 #include "Player.h"
 #include "Background.h"
-#include "Animation.h"
+#include "CAnimation.h"
 #include "Camera.h"
 
 class CApp
@@ -29,8 +29,6 @@ private:
 	Background* m_background;
 	Camera* m_camera;
 
-	LARGE_INTEGER		m_second;
-	LARGE_INTEGER		m_time;
 	float m_deltaTime = 0.0f;
 
 

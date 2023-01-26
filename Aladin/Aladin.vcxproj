@@ -128,13 +128,15 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Aladin.cpp" />
-    <ClCompile Include="Animation.cpp" />
+    <ClCompile Include="CAnimation.cpp" />
+    <ClCompile Include="Animator.cpp" />
     <ClCompile Include="AttackState.cpp" />
     <ClCompile Include="Background.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CApp.cpp" />
     <ClCompile Include="CBitmap.cpp" />
     <ClCompile Include="CDC.cpp" />
+    <ClCompile Include="CFrameTime.cpp" />
     <ClCompile Include="CSprite.cpp" />
     <ClCompile Include="FallState.cpp" />
     <ClCompile Include="IdleState.cpp" />
@@ -147,13 +149,15 @@
     <ClCompile Include="RunningState.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Animation.h" />
+    <ClInclude Include="CAnimation.h" />
+    <ClInclude Include="Animator.h" />
     <ClInclude Include="AttackState.h" />
     <ClInclude Include="Background.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CApp.h" />
     <ClInclude Include="CBitmap.h" />
     <ClInclude Include="CDC.h" />
+    <ClInclude Include="CFrameTime.h" />
     <ClInclude Include="CSprite.h" />
     <ClInclude Include="FallState.h" />
     <ClInclude Include="IdleState.h" />

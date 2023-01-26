@@ -174,6 +174,13 @@ void Player::Jump(bool _isRunning, float _deltaTime)
 	if (m_jumpRate < 1.0f)
 	{
 		m_ypos += m_jump * _deltaTime * m_jumpRate;
+
+#ifdef _DEBUG
+		char str[20] = "";
+		sprintf_s(str, "%f\n", _deltaTime);
+		OutputDebugStringA(str);
+#endif
+
 		m_jumpRate += 0.14f;
 	}
 	else // 착지
@@ -195,44 +202,12 @@ void Player::Input(float deltaTime)
 
 void Player::Update(float deltaTime)
 {
-	m_tick += deltaTime;
-
-	////if (GetAsyncKeyState('Q') & 0x8000)
-	//	ChangeState(STATE::ATTACK);
-
-	if (m_tick >= 0.09) // 값이 클수록 애니메이션이 느려짐
-	{
-		m_tick = 0;
-		m_curState->Update(this, deltaTime);
-		m_anim[m_state]->Update();
-	}
-
-
-	// ANYSTATE
-	// run, idle : attack
-	// jump, jumprun : jump attack
-
-	/*
-	if (GetAsyncKeyState('Q') & 0x8000)
-		m_attack = true;
-
-	if (m_attack)
-	{
-		if (m_state == STATE::IDLE || m_state == STATE::RUNNING)
-		{
-
-		}
-		else if (m_state == STATE::JUMP || m_state == STATE::RunJump)
-		{
-
-		}
-		ChangeState(STATE::ATTACK);
-	}
-	*/
+	m_curState->Update(this, deltaTime);
+	m_anim[m_state]->Update(deltaTime);
 }
 
 void Player::Render(HDC hdc, float deltaTime)
 {
 	// 현위치 - 카메라 위치
-	m_anim[m_state]->Render(hdc, (m_xpos - m_camera->GetXPos()) * 4.0f, m_ypos, m_bitmap->GetMemDC());
+	m_anim[m_state]->Render(hdc, (m_xpos - m_camera->GetXPos()), m_ypos, m_bitmap->GetMemDC());
 }

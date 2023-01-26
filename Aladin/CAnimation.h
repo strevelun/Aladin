@@ -1,12 +1,11 @@
 
 #pragma once 
 
-// animation clip 
-//class CSprite;
 #include "CSprite.h"
 
 class CBitmap;
 
+// animation clip 
 class CAnimation
 {
 private :
@@ -21,6 +20,9 @@ private :
 	bool m_loop;
 	bool m_end;
 
+	int m_delay = 0;
+	int m_count = 0;
+
 	CSprite* m_curSprite;
 
 
@@ -28,7 +30,7 @@ public :
 	CAnimation(int _size, bool _loop = false);
 	~CAnimation();
 	void Add(CSprite* sprite);
-	void Update();
+	void Update(float _deltaTime);
 	void Render(HDC _dest, float _sx, float _sy, HDC _memDC);
 	void SetIdx(int _idx) { m_curIdx = _idx; }
 
@@ -37,12 +39,6 @@ public :
 		return m_curIdx >= m_capacity - 1;
 	}
 };
-
-
-// Animation idleAni = new Animation(3) ;
-// idleAni->Add( sprite1  ) ;
-// idleAni->Add( sprite2  ) ;
-// idleAni->Add( sprite3  ) ;
 
 
 
